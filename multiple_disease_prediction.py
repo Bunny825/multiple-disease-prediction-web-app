@@ -4,11 +4,11 @@ import numpy as np
 from streamlit_option_menu import option_menu
 
 
-heart_model=pickle.load(open("/home/bunnys-weapon/ML web apps/savs/heart.sav","rb"))
-diabetes_model=pickle.load(open("/home/bunnys-weapon/ML web apps/savs/diabetes_model.sav","rb"))
-parkinson_model=pickle.load(open("/home/bunnys-weapon/ML web apps/savs/parkinson_model.sav","rb"))
-parkinson_scaler=pickle.load(open("/home/bunnys-weapon/ML web apps/savs/parkinson_scaler.sav","rb"))
-diabetes_scaler=pickle.load(open("/home/bunnys-weapon/ML web apps/savs/diabetes_scaler.sav","rb"))
+heart_model=pickle.load(open("heart.sav","rb"))
+diabetes_model=pickle.load(open("diabetes_model.sav","rb"))
+parkinson_model=pickle.load(open("parkinson_model.sav","rb"))
+parkinson_scaler=pickle.load(open("parkinson_scaler.sav","rb"))
+diabetes_scaler=pickle.load(open("diabetes_scaler.sav","rb"))
 
 
 with st.sidebar:
