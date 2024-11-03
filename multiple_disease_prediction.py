@@ -2,18 +2,22 @@ import pickle
 import streamlit as st
 import numpy as np
 from streamlit_option_menu import option_menu
-
+import tensorflow as tf
+from tensorflow import keras
 
 heart_model=pickle.load(open("heart.sav","rb"))
 diabetes_model=pickle.load(open("diabetes_model.sav","rb"))
 parkinson_model=pickle.load(open("parkinson_model.sav","rb"))
+
+cardio_model=tf.keras.models.load_model("cardio_model.h5")
+
 parkinson_scaler=pickle.load(open("parkinson_scaler.sav","rb"))
 diabetes_scaler=pickle.load(open("diabetes_scaler.sav","rb"))
-
+cardio_scaler=pickle.load(open("cardio_scaler.sav","rb"))
 
 with st.sidebar:
 	selected=option_menu("Multiple Disease Prediction",
-											["Heart Disease Prediction","Diabetes Prediction","Parkinson Prediction"],
+											["Heart Disease Prediction","Diabetes Prediction","Parkinson Prediction","Cardio Diesase Prediction"],
 											icons=["heart","activity","person"],
 											default_index=0)
 											
@@ -183,4 +187,52 @@ if selected=="Parkinson Prediction":
 		
 	st.success(answer)
 	
+	
+	
+	
+	
+	
+if selected=="Cardio Diesase Prediction":
+	def pred_cardiovascular(inp):
+		inp=np.asarray(inp)
+		inp=inp.reshape(1,-1)
+		inp=cardio_scaler.transform(inp)
+		pred=cardio_model.predict(inp)
+		if pred[0]>0.5:
+			return "The patient has no cardiac disease"
+		else:
+			return "The patient is has cardiac disease"
+    		
+	st.title("Cardiac Disease prediction")
+	
+	col1,col2,col3=st.columns(3)
+	with col1:
+		Pregnancies=st.text_input("Age")	
+	with col2:
+		Glucose=st.text_input("Gender")	
+	with col3:
+		BloodPressure=st.text_input("Height")	
+	with col1:
+		SkinThickness=st.text_input("Weight")	
+	with col2:
+		Insulin=st.text_input("ap_hi")	
+	with col3:
+		BMI=st.text_input("ap_lo")	
+	with col1:
+		DiabetesPedigreeFunction=st.text_input("Cholesterol")	
+	with col2:
+		Age=st.text_input("Glucose")
+	with col3:
+		smoke=st.text_input("Smoke")	
+	with col1:
+		alcohol=st.text_input("Alcohol")	
+	with col2:
+		active=st.text_input("Active")
+		
+		
+	result=""
+	if st.button("cardiovasular prediction"):
+		inp=[	int(Pregnancies),	int(Glucose),int(	BloodPressure),  int(SkinThickness)	,int(Insulin),	float(BMI)	,float(DiabetesPedigreeFunction)	,int(Age)	,int(smoke),int(alcohol),int(active)]
+		result=pred_cardiovascular(inp)
+	st.success(result)
 	
